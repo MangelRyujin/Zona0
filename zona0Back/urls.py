@@ -42,7 +42,7 @@ urlpatterns = [
     path('register/', include('apps.users.api.routers')),
     path('transfers/orders/', include('apps.orders.api.routers')),
     re_path(r'^swagger(?P<format>\.json/\.yaml)$', schema_view.without_ui(cache_timeout=0), name = 'schema-json'),
-    path('api-doc/', schema_view.with_ui('swagger',cache_timeout=0), name = 'schema-swagger-ui'),
+    path('api-docs/', schema_view.with_ui('swagger',cache_timeout=0), name = 'schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc',cache_timeout=0), name = 'schema-swagger-redoc'),
     path("accounts/", include("apps.users.urls")),
     path("manager/register/", ManagerCreateView.as_view(), name="manager_register"),
