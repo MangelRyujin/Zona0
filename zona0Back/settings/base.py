@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -22,7 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+
+# SECRET_KEY = config("SECRET_KEY")
+
+
 # "django-insecure-a0g%zil2m$dtmj3!xh0e^y=*l+iq2qe+&00cji)!-$^#9vr0&h"
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -56,6 +61,7 @@ INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -166,11 +172,20 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER =  config("EMAIL_USER")
-EMAIL_HOST_PASSWORD =  config("EMAIL_PASSWORD")
+# EMAIL_HOST_USER =  config("EMAIL_USER")
+# EMAIL_HOST_PASSWORD =  config("EMAIL_PASSWORD")
+
+# # 
+
+# FRONTEND_URL = config("FRONTEND_URL")
+
+# 'lcof vchy ajnd osbh'
+
+
+
+EMAIL_HOST_USER =  os.environ.get('EMAIL_USER', default='your user email')
+EMAIL_HOST_PASSWORD =  os.environ.get('EMAIL_PASSWORD', default='your pass email')
 
 # 
 
-FRONTEND_URL = config("FRONTEND_URL")
-
-# 'lcof vchy ajnd osbh'
+FRONTEND_URL = os.environ.get('FRONTEND_URL', default='your front url')
