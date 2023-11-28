@@ -1,14 +1,19 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from apps.users.models import Company
-
+from PIL import Image
+import io
+from django.core.files.base import ContentFile
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('id','company_name','name','last_name','ci','type','email','company_code','movil','username','password')
+        fields = ('id','company_name','image','name','last_name','ci','type','email','company_code','movil','username','password')
         
     def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        url = representation['image']
+        url_sin_descarga = url.split("&export=download")[0]
         return {
             'id':instance.id,
             'company_name':instance.company_name,
@@ -19,13 +24,26 @@ class CompanySerializer(serializers.ModelSerializer):
             'movil':instance.movil,
             'email':instance.email,
             'type': instance.type,
-            'company_code':instance.company_code,   
+            'company_code':instance.company_code,  
+            'image': url_sin_descarga, 
         }
+        
+        
     def validate_password(self,data):
         if len(data) < 8:
             raise ValidationError("La contraseña debe poseer más de 8 caracteres")
         if data.lower() == data:
             raise ValidationError("La contraseña debe poseer al menos una mayúscula")
+        return data
+    
+    def validate_image(self,data):
+        img = Image.open(data)
+        new_image_io = io.BytesIO()
+        if img.format == 'JPEG':
+            img.save(new_image_io, format='JPEG',optimize=True, quality=70)
+        else:
+            img.save(new_image_io, format=img.format)
+        data.file = ContentFile(new_image_io.getvalue(), name=data.name)
         return data
     
     def create(self, validated_data):

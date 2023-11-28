@@ -35,4 +35,11 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     class Meta(UserDetailsSerializer.Meta):
        model = get_user_model()
        
-       fields = UserDetailsSerializer.Meta.fields + ('name',)
+       fields = UserDetailsSerializer.Meta.fields + ('name','image')
+       
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        url = representation['image']
+        url_sin_descarga = url.split("&export=download")[0]
+        representation['image'] = url_sin_descarga
+        return representation

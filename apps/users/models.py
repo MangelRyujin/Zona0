@@ -4,9 +4,16 @@ from django.core.validators import MinLengthValidator
 from django.core.exceptions import ValidationError
 from utils.send_email.send_email import send_email_verify,sign_value
 from utils.validates.validates import validate_digits,validate_alnum,validate_letters_and_spaces,validate_letters_numbers_and_spaces
+from gdstorage.storage import GoogleDriveStorage
 
 # Create your models here.
+gd_storage = GoogleDriveStorage()
 
+
+
+
+class AvatarImageUser(models.Model):
+    image = models.ImageField(upload_to='avatar/', storage=gd_storage)
 
 class UserManager(BaseUserManager):
     def _create_user(self, username, email, password, is_staff, is_superuser, **extra_fields):
@@ -55,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField('Nombres', max_length=50,validators=[MinLengthValidator(3),validate_letters_and_spaces],blank=False, null=False)
     last_name = models.CharField('Apellidos',validators=[MinLengthValidator(3),validate_letters_and_spaces], max_length=50, blank=False, null=False)
     ci=models.CharField('Carnet de identidad',validators=[MinLengthValidator(11),validate_digits], max_length=11, unique=True,blank = False, null= False)
-    
+    image = models.ImageField(upload_to='avatar/', storage=gd_storage , null=True, blank=True)
     
     class Meta:    
         verbose_name = 'Usuario'
@@ -143,3 +150,4 @@ class Zona0Manager(User):
     def burn_zop(self,cant):
        self.total_burn += cant
        self.save()
+       

@@ -55,6 +55,7 @@ THIRD_APPS = [
     'dj_rest_auth',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'gdstorage',
 ]
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
@@ -167,7 +168,8 @@ SIMPLE_JWT = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Email to send gmail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -175,17 +177,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER =  config("EMAIL_USER")
 EMAIL_HOST_PASSWORD =  config("EMAIL_PASSWORD")
 
-# 
 
+
+# frontend url
 FRONTEND_URL = config("FRONTEND_URL")
 
-# 'lcof vchy ajnd osbh'
-
-
-
-# EMAIL_HOST_USER =  os.environ.get('EMAIL_USER', default='your user email')
-# EMAIL_HOST_PASSWORD =  os.environ.get('EMAIL_PASSWORD', default='your pass email')
-
-# # 
-
-# FRONTEND_URL = os.environ.get('FRONTEND_URL', default='your front url')
+# access to google drive 
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = config("GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE")
