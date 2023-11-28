@@ -1,4 +1,6 @@
 .venv
+zona0.json
 .env
 .vscode
 db.sqlite3
+
