@@ -3,13 +3,6 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
-
-
-# class CompanySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Company
-#         fields = ['company_name', 'company_code', 'type', 'correct_company']
-
 class EmailVerificationLoginSerializer(LoginSerializer):
     """
     Custom login serializer that verifies the status of the email confirmation
