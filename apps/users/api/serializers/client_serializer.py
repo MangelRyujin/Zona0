@@ -14,7 +14,7 @@ class ClientSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         url = representation['image']
-        url_sin_descarga = url.split("&export=download")[0]
+        url_image = url.split("&export=download")[0]
         return {
             'id':instance.id,
             'name':instance.name,
@@ -23,7 +23,7 @@ class ClientSerializer(serializers.ModelSerializer):
             'email':instance.email,
             'movil':instance.movil,
             'ci':instance.ci,
-            'image': url_sin_descarga,
+            'image': url_image,
         }
         
     def validate_password(self,data):
@@ -34,6 +34,8 @@ class ClientSerializer(serializers.ModelSerializer):
         return data
     
     def validate_image(self,data):
+        if data.size > 2 * 1024 * 1024:
+            raise serializers.ValidationError("El archivo es demasiado grande (máximo 2MB)")
         img = Image.open(data)
         new_image_io = io.BytesIO()
         if img.format == 'JPEG':
@@ -46,3 +48,26 @@ class ClientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = Client.objects.create_user(**validated_data)
         return user
+    
+class ClientUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ('id','name','last_name','email','username','movil','ci')
+        
+    def to_representation(self, instance):
+        return {
+            'id':instance.id,
+            'name':instance.name,
+            'last_name':instance.last_name,
+            'username':instance.username,
+            'email':instance.email,
+            'movil':instance.movil,
+            'ci':instance.ci,
+        }
+        
+    def validate_password(self,data):
+        if len(data) < 8:
+            raise ValidationError("La contraseña debe poseer más de 8 caracteres")
+        if data.lower() == data:
+            raise ValidationError("La contraseña debe poseer al menos una mayúscula")
+        return data

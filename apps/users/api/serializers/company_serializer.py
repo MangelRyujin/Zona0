@@ -13,7 +13,7 @@ class CompanySerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         url = representation['image']
-        url_sin_descarga = url.split("&export=download")[0]
+        url_img = url.split("&export=download")[0]
         return {
             'id':instance.id,
             'company_name':instance.company_name,
@@ -25,7 +25,7 @@ class CompanySerializer(serializers.ModelSerializer):
             'email':instance.email,
             'type': instance.type,
             'company_code':instance.company_code,  
-            'image': url_sin_descarga, 
+            'image': url_img, 
         }
         
         

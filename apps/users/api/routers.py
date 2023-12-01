@@ -10,4 +10,5 @@ router.register(r'client', ClientRegisterView, basename = 'client')
 router.register(r'company', CompanyRegisterView, basename = 'company')
 
 
+
 urlpatterns = router.urls 

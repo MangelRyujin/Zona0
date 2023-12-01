@@ -3,6 +3,7 @@ from dj_rest_auth.views import LoginView, LogoutView, PasswordChangeView, Passwo
 from django.urls import path
 from rest_framework_simplejwt.views import TokenVerifyView
 from apps.users.api.views.verify_email_view import email_verification
+from apps.users.api.views.image_view import ImageView
 
 urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
@@ -13,5 +14,6 @@ urlpatterns = [
     path("token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("email/verify/<str:token>/", email_verification, name="email_verify"),
+    path("update/image-user/", ImageView.as_view(), name="update_image"),
     
 ]

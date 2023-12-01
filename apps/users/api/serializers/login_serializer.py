@@ -2,13 +2,13 @@ from dj_rest_auth.serializers import LoginSerializer,UserDetailsSerializer
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
-from apps.users.models import Company
 
 
-class CompanySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = ['company_name', 'company_code', 'type', 'correct_company']
+
+# class CompanySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Company
+#         fields = ['company_name', 'company_code', 'type', 'correct_company']
 
 class EmailVerificationLoginSerializer(LoginSerializer):
     """
@@ -39,7 +39,13 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
        
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        url = representation['image']
-        url_sin_descarga = url.split("&export=download")[0]
-        representation['image'] = url_sin_descarga
+        if representation['image']:
+            url = representation['image']
+            url_sin_descarga = url.split("&export=download")[0]
+            representation['image'] = url_sin_descarga
+            return representation
         return representation
+        
+        
+        
+        
