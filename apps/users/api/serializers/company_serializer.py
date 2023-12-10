@@ -10,24 +10,6 @@ class CompanySerializer(serializers.ModelSerializer):
         model = Company
         fields = ('id','company_name','image','name','last_name','ci','type','email','company_code','movil','username','password')
         
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        url = representation['image']
-        url_img = url.split("&export=download")[0]
-        return {
-            'id':instance.id,
-            'company_name':instance.company_name,
-            'name':instance.name,
-            'last_name':instance.last_name,
-            'ci':instance.ci,
-            'username':instance.username,
-            'movil':instance.movil,
-            'email':instance.email,
-            'type': instance.type,
-            'company_code':instance.company_code,  
-            'image': url_img, 
-        }
-        
         
     def validate_password(self,data):
         if len(data) < 8:

@@ -12,5 +12,5 @@ class CompanyRegisterView(viewsets.GenericViewSet):
         serializers = self.serializer_class(data = request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response({'message':'Compañia creado correctamente!','data':serializers.data}, status = status.HTTP_201_CREATED)
+            return Response({'message':'Compañia creado correctamente!'}, status = status.HTTP_201_CREATED)
         return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)

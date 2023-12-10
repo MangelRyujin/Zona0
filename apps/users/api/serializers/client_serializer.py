@@ -11,21 +11,6 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = ('id','name','last_name','email','username','movil','password','ci','image')
         
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        url = representation['image']
-        url_image = url.split("&export=download")[0]
-        return {
-            'id':instance.id,
-            'name':instance.name,
-            'last_name':instance.last_name,
-            'username':instance.username,
-            'email':instance.email,
-            'movil':instance.movil,
-            'ci':instance.ci,
-            'image': url_image,
-        }
-        
     def validate_password(self,data):
         if len(data) < 8:
             raise ValidationError("La contraseña debe poseer más de 8 caracteres")
