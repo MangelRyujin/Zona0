@@ -19,13 +19,16 @@ class ManagerSerializer(serializers.ModelSerializer):
         return data
     
     def validate_image(self,data):
-        img = Image.open(data)
-        new_image_io = io.BytesIO()
-        if img.format == 'JPEG':
-            img.save(new_image_io, format='JPEG',optimize=True, quality=70)
-        else:
-            img.save(new_image_io, format=img.format)
-        data.file = ContentFile(new_image_io.getvalue(), name=data.name)
+        if data:
+            if data.size > 2 * 1024 * 1024:
+                raise serializers.ValidationError("El archivo es demasiado grande (máximo 2MB)")
+            img = Image.open(data)
+            new_image_io = io.BytesIO()
+            if img.format == 'JPEG':
+                img.save(new_image_io, format='JPEG',optimize=True, quality=70)
+            else:
+                img.save(new_image_io, format=img.format)
+            data.file = ContentFile(new_image_io.getvalue(), name=data.name)
         return data
     
     def create(self, validated_data):
