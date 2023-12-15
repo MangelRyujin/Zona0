@@ -16,13 +16,13 @@ def validate_alnum(value):
 
 
 def validate_letters_and_spaces(value):
-    if not re.match(r'^[A-Za-z\s]*$', value):
+    if not re.match(r'^[A-Za-z\sáéíóúÁÉÍÓÚ]*$', value):
         raise ValidationError(
             f'{value} contiene caracteres no permitidos. Solo se permiten letras y espacios en blanco.'
         )
         
 def validate_letters_numbers_and_spaces(value):
-    if not re.match(r'^[A-Za-z0-9\s]*$', value):
+    if not re.match(r'^[A-Za-z0-9\sáéíóúÁÉÍÓÚ]*$', value):
         raise ValidationError(
             f'Contiene caracteres no permitidos. Solo se permiten letras, números y espacios en blanco.'
         )
