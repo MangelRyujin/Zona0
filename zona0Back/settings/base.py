@@ -101,6 +101,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
     "https://e-commerce-r7cc.onrender.com",
+    "https://e-commece-khaki.vercel.app",
 ]
 
 
@@ -108,6 +109,7 @@ CORS_ORIGIN_WHITELIST =[
     "http://localhost:3000",
     "http://localhost:5173",
     "https://e-commerce-r7cc.onrender.com",
+    "https://e-commece-khaki.vercel.app",
 
 ]
 
