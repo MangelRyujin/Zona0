@@ -1,43 +1,43 @@
 from rest_framework import serializers
-from apps.orders.models import TransferOrderUsers, TransferManagerOrderUsers
+from apps.orders.models import TransferManagerOrderUsers
 from django.core.exceptions import ValidationError
 from apps.users.models import User,Zona0Manager
         
-class TransferOrderUsersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TransferOrderUsers
-        fields = ('id','user','email','cant_zona_point','date','time')
+# class TransferOrderUsersSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = TransferOrderUsers
+#         fields = ('id','user','email','cant_zona_point','date','time')
         
-    def to_representation(self, instance):
-        return {
-            'id':instance.id,
-            'user':instance.user.username,
-            'email':instance.email,
-            'cant_zona_point':instance.cant_zona_point,
-            'date': instance.date,
-            'time': instance.time,
-        }
+#     def to_representation(self, instance):
+#         return {
+#             'id':instance.id,
+#             'user':instance.user.username,
+#             'email':instance.email,
+#             'cant_zona_point':instance.cant_zona_point,
+#             'date': instance.date,
+#             'time': instance.time,
+#         }
         
-    def validate_email(self,data):
-        user = User.objects.filter(email=data).first()
-        if user and user.email == data:
-            return data
-        else:
-            raise ValidationError("El usuario al que desea enviar la transferencia no existe.")
+#     def validate_email(self,data):
+#         user = User.objects.filter(email=data).first()
+#         if user and user.email == data:
+#             return data
+#         else:
+#             raise ValidationError("El usuario al que desea enviar la transferencia no existe.")
     
-    def validate_cant_zona_point(self,data):
-        user = User.objects.filter(id=self.initial_data['user']).first()
-        if user:
-            if data > 0 and user.zona_point - data > 0:
-                return data
-            else: raise ValidationError("No puedes extraer esa cantidad.")
-        else:
-            raise ValidationError("El usuario no existe.")
+#     def validate_cant_zona_point(self,data):
+#         user = User.objects.filter(id=self.initial_data['user']).first()
+#         if user:
+#             if data > 0 and user.zona_point - data > 0:
+#                 return data
+#             else: raise ValidationError("No puedes extraer esa cantidad.")
+#         else:
+#             raise ValidationError("El usuario no existe.")
         
     
-    def create(self, validated_data):
-        order = TransferOrderUsers.objects.create(**validated_data)
-        return order
+#     def create(self, validated_data):
+#         order = TransferOrderUsers.objects.create(**validated_data)
+#         return order
     
 class TransferManagerOrderSerializer(serializers.ModelSerializer):
     class Meta:

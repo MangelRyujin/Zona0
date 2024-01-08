@@ -12,8 +12,8 @@ gd_storage = GoogleDriveStorage()
 
 
 
-class AvatarImageUser(models.Model):
-    image = models.ImageField(upload_to='avatar/', storage=gd_storage)
+# class AvatarImageUser(models.Model):
+#     image = models.ImageField(upload_to='avatar/', storage=gd_storage)
 
 class UserManager(BaseUserManager):
     def _create_user(self, username, email, password, is_staff, is_superuser, **extra_fields):
