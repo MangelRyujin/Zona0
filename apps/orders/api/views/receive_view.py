@@ -40,7 +40,7 @@ def ListPaidReceiveOSPView(request):
 def ListUnpaidReceiveOSPView(request):
     user = get_object_or_404(User, pk=request.user.id)
     if user:
-        receiver = ReceiveOSP.objects.filter(user=user).filter(state='Unpaid').order_by('-date', '-time')[:30]
+        receiver = ReceiveOSP.objects.filter(user=user).filter(state='Unpaid').order_by('-date', '-time')
         if receiver:
             transfer_serializer = ReceiveOSPSerializer(receiver, many=True)
             return Response(transfer_serializer.data, status = status.HTTP_200_OK)
