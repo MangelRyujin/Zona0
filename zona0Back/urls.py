@@ -47,4 +47,5 @@ urlpatterns = [
     path("accounts/", include("apps.users.urls")),
     path("manager/register/", ManagerCreateView.as_view(), name="manager_register"),
     path("manager/", include('apps.manager.urls')),
+    path("transfer/", include('apps.orders.urls')),
 ]

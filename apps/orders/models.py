@@ -3,6 +3,10 @@ from apps.users.models import User,Zona0Manager
 import uuid
 from gdstorage.storage import GoogleDriveStorage
 gd_storage = GoogleDriveStorage()
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw 
 
 # Create your models here.
 
@@ -45,7 +49,7 @@ class TimeTransfer(models.Model):
     class Meta:
         abstract = True
     
-class ReceiveOSP(TimeStampMixin):
+class ReceiveOSP(TimeTransfer):
     """docstring for ReceiveOSP."""
     STATE_CHOICES = [
         ('Unpaid', 'Unpaid'),
@@ -55,7 +59,7 @@ class ReceiveOSP(TimeStampMixin):
     state = models.CharField('Estado de la orden',max_length=13,default='Unpaid' ,choices=STATE_CHOICES, blank=False, null=False)
     amount = models.DecimalField('Monto a pagar',decimal_places=2, max_digits=11, default=0, null=False, blank=False)
     code = models.UUIDField(default=uuid.uuid4, editable=False, null=False, blank=False)
-    image = models.ImageField(upload_to='code/', storage=gd_storage , null=True, blank=True)
+    image = models.ImageField(upload_to='avatar/', storage=gd_storage , null=True, blank=True)
     
     
     class Meta:    
@@ -65,6 +69,17 @@ class ReceiveOSP(TimeStampMixin):
     def __str__(self) -> str:
         return f'Recibo generado por el usuario {self.user} con un monto de {self.amount} OSP'
     
+    def save(self, *args, **kwargs):
+       qr = qrcode.make(f'{self.code}')
+       qr_offset = Image.new('RGB', (340, 340), 'white')
+       draw_img = ImageDraw.Draw(qr_offset)
+       qr_offset.paste(qr)
+       file_name = f'{self.id}.png'
+       stream = BytesIO()
+       qr_offset.save(stream, 'PNG')
+       self.image.save(file_name, File(stream), save=False)
+       qr_offset.close()
+       super().save(*args, **kwargs)
 
 class TransferOSP(TimeStampMixin):
     """docstring for ReceiveOSP."""
