@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from apps.orders.api.serializers.sendTransfer_serializer import TransferOSPSerializer
 from rest_framework import status
 from apps.users.models import User
-from apps.orders.models import ReceiveOSP
+from apps.orders.models import ReceiveOSP,TransferOSP
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -16,13 +16,14 @@ receive_response = openapi.Response('response description', TransferOSPSerialize
 list_detail={
   "id": 0,
   "user": 0,
-  "amount": "string",
+  "receive amount": 00.00,
+  "receive user": 1,
   "date": "2024-01-09",
-  "time": "string"
+  "time": "string",
 }
 
 test_param = openapi.Parameter('code', openapi.IN_QUERY, description="enter an code", type=openapi.TYPE_STRING)
-@swagger_auto_schema(method='post', manual_parameters=[test_param], responses={201: receive_response})
+@swagger_auto_schema(method='post', manual_parameters=[test_param], responses={201: f'{list_detail}'})
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def CreateTransferOSPView(request):
@@ -39,3 +40,16 @@ def CreateTransferOSPView(request):
         else: return Response({'error':f"No tienes {receive.amount} OSP para transferir"}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'message':'No puedes pagarte a ti mismo'}, status=status.HTTP_404_NOT_FOUND)
 
+
+@swagger_auto_schema(method='get', manual_parameters=None, responses={200: f'{list_detail}'})
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def ListSendTrasferOSPView(request):
+    user = get_object_or_404(User, pk=request.user.id)
+    if user:
+        transfer = TransferOSP.objects.filter(user=user).order_by('-date', '-time')[:30]
+        if transfer:
+            transfer_serializer = TransferOSPSerializer(transfer, many=True)
+            return Response(transfer_serializer.data, status = status.HTTP_200_OK)
+        return Response({'message':'No se han realizado envios'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({'message':'Usuario no existe'}, status=status.HTTP_404_NOT_FOUND)
