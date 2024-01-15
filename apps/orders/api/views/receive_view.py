@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view,permission_classes
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from rest_framework.permissions import IsAuthenticated
-from apps.orders.api.serializers.transfer_serializer import ReceiveOSPSerializer
+from apps.orders.api.serializers.transfer_serializer import ReceiveOSPSerializer, DetailReceiveOSPSerializer
 from rest_framework import status
 from apps.users.models import User
 from apps.orders.models import ReceiveOSP
@@ -30,6 +30,16 @@ list_paid_receive={
   "code": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "state": "Paid",
   "image": "string",
+  "date": "2024-01-09",
+  "time": "string"
+}
+
+list_detail={
+  "id": 0,
+  "user": 0,
+  "amount": "string",
+  "code": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "state": "Unpaid",
   "date": "2024-01-09",
   "time": "string"
 }
@@ -75,6 +85,20 @@ def ListUnpaidReceiveOSPView(request):
             return Response(transfer_serializer.data, status = status.HTTP_200_OK)
         return Response({'message':'No existen solicitudes de recibos'}, status=status.HTTP_404_NOT_FOUND)
     return Response({'message':'Usuario no existe'}, status=status.HTTP_404_NOT_FOUND)
+
+@swagger_auto_schema(method='post', manual_parameters=None, responses={200: f'{list_detail}'})
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def DetailReceiveOSPView(request):
+    receive = get_object_or_404(ReceiveOSP, code=request.data['code'])
+    if receive :
+        if receive.state == 'Unpaid':
+            transfer_serializer = DetailReceiveOSPSerializer(receive)
+            return Response(transfer_serializer.data, status = status.HTTP_200_OK)
+        return Response({'message':'El recivo ya a sido pagado'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({'message':'No existe el recivo'}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 @swagger_auto_schema(method='delete', responses={200: 'Solicitud eliminada'})

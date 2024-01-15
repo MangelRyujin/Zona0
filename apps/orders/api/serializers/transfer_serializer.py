@@ -66,4 +66,20 @@ class CreateReceiveOSPSerializer(serializers.ModelSerializer):
             'image':url_image,
         }  
         
+class DetailReceiveOSPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReceiveOSP
+        fields = ('id','user', 'state', 'amount', 'code','date','time')
+        
+    def to_representation(self, instance):
+        return {
+            'id':instance.id,
+            'user':instance.user.username,
+            'code':instance.code,
+            'state':instance.state,
+            'amount':instance.amount,
+            'date': instance.date,
+            'time': instance.time,
+        }  
+        
     

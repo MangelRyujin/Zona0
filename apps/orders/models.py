@@ -70,25 +70,31 @@ class ReceiveOSP(TimeTransfer):
         return f'Recibo generado por el usuario {self.user} con un monto de {self.amount} OSP'
     
     def save(self, *args, **kwargs):
-       qr = qrcode.make(f'{self.code}')
-       qr_offset = Image.new('RGB', (340, 340), 'white')
-       draw_img = ImageDraw.Draw(qr_offset)
-       qr_offset.paste(qr)
-       file_name = f'{self.id}.png'
-       stream = BytesIO()
-       qr_offset.save(stream, 'PNG')
-       self.image.save(file_name, File(stream), save=False)
-       qr_offset.close()
-       super().save(*args, **kwargs)
+        if self.image == None:
+            qr = qrcode.make(f'{self.code}')
+            qr_offset = Image.new('RGB', (340, 340), 'white')
+            draw_img = ImageDraw.Draw(qr_offset)
+            qr_offset.paste(qr)
+            file_name = f'{self.id}.png'
+            stream = BytesIO()
+            qr_offset.save(stream, 'PNG')
+            self.image.save(file_name, File(stream), save=False)
+            qr_offset.close()
+        super().save(*args, **kwargs)
 
-class TransferOSP(TimeStampMixin):
-    """docstring for ReceiveOSP."""
+    def state_Paid(self):
+        self.state = 'Paid'
+        self.save()
+        
+        
+class TransferOSP(TimeTransfer):
+    """docstring for TransferOSP."""
     user = models.ForeignKey(User,on_delete=models.CASCADE, blank=False,null=False)
     receive = models.OneToOneField(ReceiveOSP,on_delete=models.CASCADE, blank=False,null=False, unique=True)
     
     class Meta:    
-        verbose_name = 'Recibir OSP'
-        verbose_name_plural = 'Recibir OSP'
+        verbose_name = 'Enviar OSP'
+        verbose_name_plural = 'Enviar OSP'
         
     def __str__(self) -> str:
         return f'Transferencia realizada por el usuario {self.user} al recibo {self.receive}'

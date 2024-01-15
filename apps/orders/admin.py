@@ -6,3 +6,4 @@ from .models import *
 
 admin.site.register(ReceiveOSP)
 admin.site.register(TransferManagerOrderUsers)
+admin.site.register(TransferOSP)
