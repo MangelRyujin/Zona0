@@ -86,7 +86,8 @@ def ListUnpaidReceiveOSPView(request):
         return Response({'message':'No existen solicitudes de recibos'}, status=status.HTTP_404_NOT_FOUND)
     return Response({'message':'Usuario no existe'}, status=status.HTTP_404_NOT_FOUND)
 
-@swagger_auto_schema(method='post', manual_parameters=None, responses={200: f'{list_detail}'})
+test_param = openapi.Parameter('code', openapi.IN_QUERY, description="enter an code", type=openapi.TYPE_STRING)
+@swagger_auto_schema(method='post', manual_parameters=[test_param], responses={200: f'{list_detail}'})
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def DetailReceiveOSPView(request):
