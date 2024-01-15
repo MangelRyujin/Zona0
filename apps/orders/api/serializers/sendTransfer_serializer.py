@@ -34,8 +34,8 @@ class TransferOSPSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'user':instance.user.username,
-            'receive id':instance.receive.id,
             'receive amount':instance.receive.amount,
+            'receive user':instance.receive.user.username,
             'date':instance.date,
             'time':instance.time,
         }
