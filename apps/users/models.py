@@ -61,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     name = models.CharField('Nombres', max_length=50,validators=[MinLengthValidator(3),validate_letters_and_spaces],blank=False, null=False)
     last_name = models.CharField('Apellidos',validators=[MinLengthValidator(3),validate_letters_and_spaces], max_length=50, blank=False, null=False)
-    ci=models.CharField('Carnet de identidad',validators=[MinLengthValidator(11),validate_digits], max_length=11, unique=True,blank = False, null= False)
+    ci=models.CharField('Carnet de identidad',validators=[MinLengthValidator(11),validate_digits], max_length=11, unique=False ,blank = False, null= False)
     image = models.ImageField(upload_to='avatar/', storage=gd_storage , null=True, blank=True)
     
     class Meta:    

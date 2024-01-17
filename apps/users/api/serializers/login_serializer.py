@@ -28,7 +28,7 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     class Meta(UserDetailsSerializer.Meta):
        model = get_user_model()
        
-       fields = UserDetailsSerializer.Meta.fields + ('name','image')
+       fields = UserDetailsSerializer.Meta.fields + ('name','image','zona_point','movil','ci','user_type')
        
     def to_representation(self, instance):
         representation = super().to_representation(instance)

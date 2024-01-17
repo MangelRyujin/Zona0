@@ -37,3 +37,38 @@ class CompanySerializer(serializers.ModelSerializer):
         user.save()
         return user
     
+class CompanyDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('id','name','last_name','username','movil','ci','company_code','type','company_name')
+        
+    def to_representation(self, instance):
+        return {
+            'id':instance.id,
+            'username':instance.username,
+            'name':instance.name,
+            'last_name':instance.last_name,
+            'movil':instance.movil,
+            'ci':instance.ci,
+            'company_name':instance.company_name,
+            'type':instance.type,
+            'company_code':instance.company_code, 
+        }
+    
+class CompanyUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('id','name','last_name','username','movil','ci','company_code','type','company_name')
+        
+    def to_representation(self, instance):
+        return {
+            'id':instance.id,
+            'username':instance.username,
+            'name':instance.name,
+            'last_name':instance.last_name,
+            'movil':instance.movil,
+            'ci':instance.ci,
+            'company_name':instance.company_name,
+            'type':instance.type,
+            'company_code':instance.company_code, 
+        }

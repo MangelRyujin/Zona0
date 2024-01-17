@@ -40,6 +40,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('register/', include('apps.users.api.routers')),
+    path('users/', include('apps.users.api.routers2')),
     # path('transfers/orders/', include('apps.orders.api.routers')),
     re_path(r'^swagger(?P<format>\.json/\.yaml)$', schema_view.without_ui(cache_timeout=0), name = 'schema-json'),
     path('api-docs/', schema_view.with_ui('swagger',cache_timeout=0), name = 'schema-swagger-ui'),

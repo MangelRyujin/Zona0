@@ -35,25 +35,33 @@ class ClientSerializer(serializers.ModelSerializer):
         user = Client.objects.create_user(**validated_data)
         return user
     
-class ClientUpdateSerializer(serializers.ModelSerializer):
+    
+class ClientDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('id','name','last_name','email','username','movil','ci')
+        fields = ('id','name','last_name','username','movil','ci')
         
     def to_representation(self, instance):
         return {
             'id':instance.id,
+            'username':instance.username,
             'name':instance.name,
             'last_name':instance.last_name,
-            'username':instance.username,
-            'email':instance.email,
             'movil':instance.movil,
             'ci':instance.ci,
         }
+    
+class ClientUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ('id','name','last_name','username','movil','ci')
         
-    def validate_password(self,data):
-        if len(data) < 8:
-            raise ValidationError("La contraseña debe poseer más de 8 caracteres")
-        if data.lower() == data:
-            raise ValidationError("La contraseña debe poseer al menos una mayúscula")
-        return data
+    def to_representation(self, instance):
+        return {
+            'id':instance.id,
+            'username':instance.username,
+            'name':instance.name,
+            'last_name':instance.last_name,
+            'movil':instance.movil,
+            'ci':instance.ci,
+        }
