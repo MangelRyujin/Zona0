@@ -10,16 +10,7 @@ class UpdateImageSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id','image')
         
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        url = representation['image']
-        url_image = url.split("&export=download")[0]
-        return {
-            'image': url_image,
-        }
-        
     def validate_image(self,data):
-       
         request = self.context.email
         if request:
             obj = User.objects.get(email=request)
