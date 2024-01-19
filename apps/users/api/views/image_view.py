@@ -16,5 +16,5 @@ class ImageView(APIView):
         serializers = self.serializer_class(request.user,data = request.data,context=request.user)
         if serializers.is_valid():
             serializers.save()
-            return Response({'message':'Imagen editada!'}, status = status.HTTP_200_OK)
+            return Response(serializers.data, status = status.HTTP_200_OK)
         return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
