@@ -5,4 +5,4 @@ from .models import *
 # Register your models here.
 
 admin.site.register(MarketingApplican)
-admin.site.register(Codes)
+admin.site.register(Code)
