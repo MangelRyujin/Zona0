@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from apps.redeem.models import MarketingApplican
+from apps.redeem.models import MarketingApplican,Code
 from django.core.exceptions import ValidationError
 
 
 class CodeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MarketingApplican
+        model = Code
         fields = ('id','marketingApplican','prize_fund','code','redeem')
         
     def to_representation(self, instance):
@@ -24,18 +24,27 @@ class MarketingApplicanSerializer(serializers.ModelSerializer):
     marketingApplican = CodeSerializer(many = True, read_only=True)
     class Meta:
         model = MarketingApplican
-        fields = ('id','place','prize_fund','winners','date','time','marketingApplican')
+        fields = ('id','place','prize_fund','winners','cant_codes','date','time','marketingApplican')
         
         
     def validate_prize_fund(self,data):
+        print(data)
         if data > 0:
             return data
         else: 
             raise ValidationError("El monto es incorrecto")
     
     def validate_winners(self,data):
-        if data < 1:
+        print(data)
+        if data > 0:
             return data
         else: 
             raise ValidationError("Al menos debes de introducir un ganador")
+        
+    def validate_cant_codes(self,data):
+        print(data)
+        if data > 0:
+            return data
+        else: 
+            raise ValidationError("Al menos debes de introducir un ganador")   
     

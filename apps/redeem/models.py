@@ -11,9 +11,9 @@ class MarketingApplican(TimeTransfer):
     """docstring for MarketingApplican."""
     
     place = models.CharField('A quién se vendio',validators=[MinLengthValidator(2),validate_letters_numbers_and_spaces],max_length=100, blank=False,null=False)
-    prize_fund = models.DecimalField('Fondo de premio',decimal_places=2, max_digits=11,validators=[MinValueValidator(1)], default=1, null=False, blank=False)
-    winners = models.PositiveIntegerField('Cantidad de premiados', default=1,null=False, blank=False)
-    cant_codes = models.PositiveIntegerField('Cantidad de codigos', default=1,null=False, blank=False)
+    prize_fund = models.DecimalField('Fondo de premio',decimal_places=2, max_digits=11,validators=[MinValueValidator(1)],default=0, null=False, blank=False)
+    winners = models.PositiveIntegerField('Cantidad de premiados',validators=[MinValueValidator(1)] ,default=0,null=False, blank=False)
+    cant_codes = models.PositiveIntegerField('Cantidad de codigos',validators=[MinValueValidator(1)] ,default=0,null=False, blank=False)
     
     class Meta:    
         verbose_name = 'Solicitante de marketing'
