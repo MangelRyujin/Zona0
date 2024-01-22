@@ -47,6 +47,11 @@ class Donation(TimeTransfer):
     def __str__(self) -> str:
         return f'Donacion realizada por el usuario {self.user} con un monto de {self.amount}  a la institucion {self.institution}'
 
+    def save(self, *args, **kwargs):
+        self.user.burn_zop(self.amount)
+        self.institution.donation_osp(self.amount)
+        super().save(*args, **kwargs)
+        
 
 class Gallery(models.Model):
     """docstring for Gallery."""

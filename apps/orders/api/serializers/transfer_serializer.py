@@ -33,20 +33,7 @@ class ReceiveOSPSerializer(serializers.ModelSerializer):
             return data
         else: 
             raise ValidationError("Debes de recibir un valor mayor a 0.")
-        
-        
-    # def create(self, validated_data):
-    #     receive = ReceiveOSP.objects.create(**validated_data)
-    #     # Create qrcode
-    #     qr = qrcode.make(f'{receive.code}')
-    #     if qr:
-    #         receive.image = qr.save(f'{receive.id}.png')
-        
-    #     receive.save()
-    #     print('recivo')
-    #     print(receive)
-    #     print('creado')
-    #     return receive
+    
 
 class CreateReceiveOSPSerializer(serializers.ModelSerializer):
     class Meta:

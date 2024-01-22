@@ -24,7 +24,6 @@ class ReceiveOSPSerializer(serializers.ModelSerializer):
 
 
 class TransferOSPSerializer(serializers.ModelSerializer):
-    # receive = ReceiveOSPSerializer()
     class Meta:
         model = TransferOSP
         fields = ('id','user','receive','date','time')

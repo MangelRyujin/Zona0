@@ -10,11 +10,6 @@ from gdstorage.storage import GoogleDriveStorage
 gd_storage = GoogleDriveStorage()
 
 
-
-
-# class AvatarImageUser(models.Model):
-#     image = models.ImageField(upload_to='avatar/', storage=gd_storage)
-
 class UserManager(BaseUserManager):
     def _create_user(self, username, email, password, is_staff, is_superuser, **extra_fields):
         user = self.model(
@@ -100,7 +95,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.zona_point - cant > 0:
             self.zona_point -= cant
             self.save()
-        else: raise ValidationError("La cantidad es mayor a su monto.")
+        else: 
+            raise ValidationError("La cantidad es mayor a su monto.")
             
 
 class Client(User):
