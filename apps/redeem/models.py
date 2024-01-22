@@ -22,7 +22,7 @@ class MarketingApplican(TimeTransfer):
         
 class Codes(models.Model):
     """docstring for Codes."""
-    marketingApplican = models.ForeignKey(MarketingApplican,on_delete=models.CASCADE, blank=False,null=False)
+    marketingApplican = models.ForeignKey(MarketingApplican,related_name='marketingApplican'on_delete=models.CASCADE, blank=False,null=False)
     prize_fund = models.DecimalField('Premio',decimal_places=2, max_digits=11, default=0, null=True, blank=True)
     code = models.UUIDField(default=uuid.uuid4, editable=False, null=False, blank=False)
     redeem = models.BooleanField('Canjeado',default=False)
