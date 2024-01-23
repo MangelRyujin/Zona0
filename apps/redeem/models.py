@@ -47,4 +47,14 @@ class Code(models.Model):
         verbose_name_plural = 'Códigos'
         
     def __str__(self) -> str:
-        return f'{self.marketingApplican}. Código {self.code} con valor de {self.prize_fund}'
+        return f'Código {self.code} con valor de {self.prize_fund}'
+    
+    def redeem_code(self):
+       self.redeem = True
+       self.save()
+       
+    def burn_code(self):
+       self.prize_fund = 0
+       self.save()
+       
+    
