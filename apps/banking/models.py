@@ -27,7 +27,7 @@ class Banking(TimeTransfer):
     def __str__(self) -> str:
         return f'Bancarización efectuada por {self.user.username} con un monto de {self.amount}'
     
-    def retired(self,cant):
+    def retired(self):
        self.state = 'Retired'
        self.active = 'False'
        self.save()

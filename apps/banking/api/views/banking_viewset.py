@@ -6,6 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from apps.users.models import User
 from decimal import Decimal
+from rest_framework.decorators import action
+from apps.banking.models import Banking
+from utils.date.date import calculate_date
+
 
 class BankingViewSet(viewsets.GenericViewSet):
     serializer_class= BankingSerializer
@@ -43,3 +47,14 @@ class BankingViewSet(viewsets.GenericViewSet):
         return Response({'message':'No existe la cuenta'}, status= status.HTTP_404_NOT_FOUND)
     
     
+    @action(detail = False, methods = ['post'])
+    def withdraw(self,request):
+        banking = self.get_queryset(request.query_params.get('id'),request.user.id)
+        if banking:
+            date = calculate_date(request.data['date'])
+            if date != 'La fecha inicial no puede ser mayor a la de retiro':
+                banking.user.transfer_zop((banking.amount+((banking.amount*(int(date/30)*3))/100)))
+                banking.retired()
+                return Response({'message':f'Su deposito ha aumentado en {(banking.amount*(int(date/30)*3))/100} OSP!!. Se le sumará un valor a sus osp de {banking.amount+((banking.amount*(int(date/30)*3))/100)}'}, status= status.HTTP_200_OK)
+            return Response({'error':{date}}, status= status.HTTP_400_BAD_REQUEST)
+        return Response({'error':f'Deposito no activo'}, status= status.HTTP_400_BAD_REQUEST)

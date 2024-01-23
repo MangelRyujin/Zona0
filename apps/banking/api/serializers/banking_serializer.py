@@ -6,13 +6,14 @@ from apps.banking.models import Banking
 class BankingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banking
-        fields = ('id','user','amount','date','time')
+        fields = ('id','user','state','amount','date','time')
         
     def to_representation(self, instance):
         return {
             'id': instance.id,
             'user' : instance.user.username,
             'amount' : instance.amount,
+            'state': instance.state,
             'date' : instance.date,
             'time' : instance.time,
         }
