@@ -12,8 +12,8 @@ from PIL import Image, ImageDraw
 
 class TimeStampMixin(models.Model):
     
-    date = models.DateField('Fecha de efectuada la transferencia', auto_now_add=True, null=True)
-    time = models.TimeField('Hora de efectuada la transferencia', auto_now_add=True, null=True)
+    date = models.DateField('Fecha', auto_now_add=True, null=True)
+    time = models.TimeField('Hora', auto_now_add=True, null=True)
     cant_zona_point=models.DecimalField('Puntos de Zona0 transferidos', max_digits=10,  decimal_places=2, blank=False, null= False)
     email = models.EmailField('Correo Electrónico del usuario al que se le transfirió', max_length=50 , unique=False, blank = False, null= False) 
     
@@ -42,8 +42,8 @@ class TransferManagerOrderUsers(TimeStampMixin):
     
 class TimeTransfer(models.Model):
     
-    date = models.DateField('Fecha de efectuada la transferencia', auto_now_add=True, null=True)
-    time = models.TimeField('Hora de efectuada la transferencia', auto_now_add=True, null=True)
+    date = models.DateField('Fecha', auto_now_add=True, null=True)
+    time = models.TimeField('Hora', auto_now_add=True, null=True)
     
     """docstring for ClassName."""
     class Meta:

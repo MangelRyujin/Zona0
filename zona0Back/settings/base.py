@@ -48,6 +48,7 @@ LOCAL_APPS = [
     'apps.orders',
     'apps.institution',
     'apps.redeem',
+    'apps.banking',
 ]
 
 THIRD_APPS = [
