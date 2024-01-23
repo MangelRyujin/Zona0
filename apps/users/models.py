@@ -92,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
        self.save()
        
     def burn_zop(self,cant):
-        if self.zona_point - cant > 0:
+        if self.zona_point - cant >= 0:
             self.zona_point -= cant
             self.save()
         else: 

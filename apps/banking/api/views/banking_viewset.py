@@ -5,7 +5,7 @@ from apps.banking.api.serializers.banking_serializer import BankingSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from apps.users.models import User
-from apps.institution.models import Institution
+from decimal import Decimal
 
 class BankingViewSet(viewsets.GenericViewSet):
     serializer_class= BankingSerializer
@@ -21,7 +21,7 @@ class BankingViewSet(viewsets.GenericViewSet):
         if donations.exists():
             donations_serializers = self.serializer_class(donations,many = True)
             return Response(donations_serializers.data, status = status.HTTP_200_OK)
-        return Response({'message':'No existen donaciones!'},status = status.HTTP_404_NOT_FOUND)
+        return Response({'message':'No existen cuentas activas!'},status = status.HTTP_404_NOT_FOUND)
     
     def create(self,request):
         user = get_object_or_404(User, pk = request.user.id)
@@ -29,6 +29,7 @@ class BankingViewSet(viewsets.GenericViewSet):
         serializers = self.serializer_class(data = data, context={'user':user})
         if serializers.is_valid():
             serializers.save()
+            user.burn_zop(Decimal(request.data['amount']))
             return Response(serializers.data, status = status.HTTP_201_CREATED)
         return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
         
@@ -39,6 +40,6 @@ class BankingViewSet(viewsets.GenericViewSet):
         if donations:
             donations_serializers = self.serializer_class(donations)
             return Response(donations_serializers.data, status= status.HTTP_200_OK)
-        return Response({'message':'No existe la donacion'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'message':'No existe la cuenta'}, status= status.HTTP_404_NOT_FOUND)
     
     

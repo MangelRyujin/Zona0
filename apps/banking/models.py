@@ -9,7 +9,7 @@ class Banking(TimeTransfer):
     STATE_CHOICES = (
         ('Banked', 'Banked'),
         ('Retired', 'Retired'),
-        # Add other user types here
+        # Add other state types here
     )
 
     state = models.CharField('Estado de la bancarización',max_length=10, choices=STATE_CHOICES, default='Banked') 
