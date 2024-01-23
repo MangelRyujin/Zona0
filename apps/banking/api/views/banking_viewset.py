@@ -51,7 +51,7 @@ class BankingViewSet(viewsets.GenericViewSet):
     def withdraw(self,request):
         banking = self.get_queryset(request.query_params.get('id'),request.user.id)
         if banking:
-            date = calculate_date(request.data['date'])
+            date = calculate_date(banking.date)
             if date != 'La fecha inicial no puede ser mayor a la de retiro':
                 banking.user.transfer_zop((banking.amount+((banking.amount*(int(date/30)*3))/100)))
                 banking.retired()

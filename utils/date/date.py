@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 def calculate_date(value):
-    bancking_date = datetime.strptime(value, '%Y-%m-%d').date()
+    bancking_date = value
     date_withdraw = datetime.now().date()
     if bancking_date > date_withdraw:
         return 'La fecha inicial no puede ser mayor a la de retiro'
