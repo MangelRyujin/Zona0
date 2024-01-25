@@ -5,7 +5,7 @@ from apps.orders.models import TimeTransfer
     
     
 class Banking(TimeTransfer):
-    """docstring for Institution."""
+    """docstring for Banking."""
     STATE_CHOICES = (
         ('Banked', 'Banked'),
         ('Retired', 'Retired'),
