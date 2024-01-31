@@ -21,7 +21,7 @@ class CodeViewSet(viewsets.GenericViewSet):
     @action(detail = False, methods = ['post'])
     def redeem(self,request):
         if request.data['code']:
-            code = self.get_queryset(request.data['code'])
+            code = self.get_queryset(request.data['code'].strip())
             if code:
                 if code.redeem:
                     return Response({'error':'Código ya canjeado'}, status= status.HTTP_400_BAD_REQUEST)
