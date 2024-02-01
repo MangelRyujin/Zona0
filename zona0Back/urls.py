@@ -41,6 +41,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('register/', include('apps.users.api.routers')),
     path('users/', include('apps.users.api.routers2')),
+    path('card/', include('apps.card.api.routers')),
     path('institutions/', include('apps.institution.api.routers')),
     path('redeem-code/', include('apps.redeem.api.routers')),
     path('banking/', include('apps.banking.api.routers')),

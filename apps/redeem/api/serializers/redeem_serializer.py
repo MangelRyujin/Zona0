@@ -28,21 +28,21 @@ class MarketingApplicanSerializer(serializers.ModelSerializer):
         
         
     def validate_prize_fund(self,data):
-        print(data)
+        
         if data > 0:
             return data
         else: 
             raise ValidationError("El monto es incorrecto")
     
     def validate_winners(self,data):
-        print(data)
+
         if data > 0:
             return data
         else: 
             raise ValidationError("Al menos debes de introducir un ganador")
         
     def validate_cant_codes(self,data):
-        print(data)
+     
         if data > 0:
             return data
         else: 
