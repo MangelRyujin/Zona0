@@ -38,6 +38,7 @@ class Min_WithdrawCardSerializer(serializers.ModelSerializer):
             'min_withdraw': instance.min_withdraw,
             'active' : instance.active,
             'discount_code' : instance.discount_code,
+            
         }
         
     def min_withdraw_validation(value):

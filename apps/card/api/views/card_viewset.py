@@ -72,3 +72,5 @@ class CardViewSet(viewsets.GenericViewSet):
             serializers = self.serializer_class(card)
             return Response(serializers.data, status = status.HTTP_200_OK)
         return Response({'error':f'Tarjeta no encontrada'}, status= status.HTTP_400_BAD_REQUEST)
+    
+
