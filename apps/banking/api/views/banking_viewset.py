@@ -53,8 +53,10 @@ class BankingViewSet(viewsets.GenericViewSet):
         if banking:
             date = calculate_date(banking.date)
             if date != 'La fecha inicial no puede ser mayor a la de retiro':
-                banking.user.transfer_zop((banking.amount+((banking.amount*(int(date/30)*3))/100)))
-                banking.retired()
-                return Response({'message':f'Su deposito ha aumentado en {(banking.amount*(int(date/30)*3))/100} OSP!!. Se le sumará un valor a sus osp de {banking.amount+((banking.amount*(int(date/30)*3))/100)}'}, status= status.HTTP_200_OK)
+                if int(date/30) >= 2:
+                    banking.user.transfer_zop((banking.amount+((banking.amount*(int(date/30)*3))/100)))
+                    banking.retired()
+                    return Response({'message':f'Su deposito ha aumentado en {(banking.amount*(int(date/30)*3))/100} OSP!!. Se le sumará un valor a sus osp de {banking.amount+((banking.amount*(int(date/30)*3))/100)}'}, status= status.HTTP_200_OK)
+                return Response({'error':'Necesitas 2 meses bancarizados para extraer ese monto'}, status= status.HTTP_400_BAD_REQUEST)
             return Response({'error':{date}}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'error':f'Deposito no activo'}, status= status.HTTP_400_BAD_REQUEST)

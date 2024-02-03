@@ -16,7 +16,7 @@ class Institution(models.Model):
     
     institution_name = models.CharField('Nombre de Enmpresa',validators=[MinLengthValidator(2),validate_letters_numbers_and_spaces],max_length=75, unique=True,blank = False, null= False)
     institution_osp = models.DecimalField('Donaciones en OSP',decimal_places=2, max_digits=11, default=0, null=False, blank=False)
-    description = models.CharField('Descripción de la institución', validators=[validate_letters_numbers_and_spaces], max_length=500)
+    description = models.TextField('Descripción de la institución',default='Descripción de la institución',null=False, blank=False)
     image = models.ImageField(upload_to='avatar/', storage=gd_storage , null=True, blank=True)
     active = models.BooleanField(default=True)
     
