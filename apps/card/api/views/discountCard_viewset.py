@@ -8,6 +8,7 @@ from apps.card.models import Card,DiscountCard
 from apps.users.models import User
 from decimal import Decimal
 from rest_framework.decorators import action
+from django.utils import timezone
 from apps.card.api.serializers.discountCard_serializer import DiscountCardSerializer
 
 
@@ -42,7 +43,11 @@ class DiscountCardViewSet(viewsets.GenericViewSet):
         card = Card.objects.filter(pin=request.query_params.get('pin')).filter(active=True).filter(on_hold=False).first()
         if card:
             if card.user != request.user:
-                if card.min_withdraw < Decimal(request.data['amount']):
+                discounts = DiscountCard.objects.filter(card=card.id).filter(date=timezone.now().date())
+                min = 0
+                for discount in discounts:
+                    min+=discount.amount
+                if card.min_withdraw-Decimal(min) >= Decimal(request.data['amount']):
                     data = {'card':card.id,'user':request.user.id, 'amount':Decimal(request.data['amount'])}
                     serializers = self.serializer_class(data = data, context={'user':card.user})
                     if serializers.is_valid():
@@ -54,7 +59,7 @@ class DiscountCardViewSet(viewsets.GenericViewSet):
                         card.save()
                         return Response(serializers.data, status = status.HTTP_201_CREATED)
                     return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
-                return Response({'error':'Lo sentimos exede el maximo de descuento de esa tarjeta'},status = status.HTTP_400_BAD_REQUEST)
+                return Response({'error':f"Lo sentimos exede el maximo de descuento diario de esa tarjeta, maximo a extraer {card.min_withdraw-Decimal(min)}"},status = status.HTTP_400_BAD_REQUEST)
             return Response({'error':'No puede descontarce a usted mismo'},status = status.HTTP_400_BAD_REQUEST)
         return Response({'error':'Tarjeta no existente'}, status= status.HTTP_404_NOT_FOUND)
     
