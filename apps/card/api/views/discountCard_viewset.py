@@ -59,7 +59,7 @@ class DiscountCardViewSet(viewsets.GenericViewSet):
                         card.save()
                         return Response(serializers.data, status = status.HTTP_201_CREATED)
                     return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
-                return Response({'error':f"Lo sentimos exede el maximo de descuento diario de esa tarjeta, maximo a extraer {card.min_withdraw-Decimal(min)}"},status = status.HTTP_400_BAD_REQUEST)
+                return Response({'error':f"Lo sentimos excede el máximo de descuento diario de esa tarjeta, máximo a extraer {card.min_withdraw-Decimal(min)}"},status = status.HTTP_400_BAD_REQUEST)
             return Response({'error':'No puede descontarce a usted mismo'},status = status.HTTP_400_BAD_REQUEST)
         return Response({'error':'Tarjeta no existente'}, status= status.HTTP_404_NOT_FOUND)
     
