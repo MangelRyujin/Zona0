@@ -40,7 +40,7 @@ class DiscountCardViewSet(viewsets.GenericViewSet):
     
     def create(self,request):
         user = get_object_or_404(User, pk = request.user.id)
-        card = Card.objects.filter(pin=request.query_params.get('pin')).filter(active=True).filter(on_hold=False).first()
+        card = Card.objects.filter(pin=request.query_params.get('pin')).filter(discount_code=request.data['discount_code']).filter(active=True).filter(on_hold=False).first()
         if card:
             if card.user != request.user:
                 discounts = DiscountCard.objects.filter(card=card.id).filter(date=timezone.now().date())
