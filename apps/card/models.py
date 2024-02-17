@@ -30,7 +30,7 @@ class Card(models.Model):
         super().save(*args, **kwargs)
         
     def __str__(self) -> str:
-        return f'Tarjeta asignada al usuario {self.user.username}'
+        return f'Tarjeta asignada al usuario {self.user.username} pin: {self.pin}'
     
     def desactive(self):
        self.active = 'False'
