@@ -40,26 +40,28 @@ class DiscountCardViewSet(viewsets.GenericViewSet):
     
     def create(self,request):
         user = get_object_or_404(User, pk = request.user.id)
-        card = Card.objects.filter(pin=request.query_params.get('pin')).filter(discount_code=request.data['discount_code']).filter(active=True).filter(on_hold=False).first()
+        card = Card.objects.filter(pin=request.query_params.get('pin')).filter(active=True).filter(on_hold=False).first()
         if card:
             if card.user != request.user:
-                discounts = DiscountCard.objects.filter(card=card.id).filter(date=timezone.now().date())
-                min = 0
-                for discount in discounts:
-                    min+=discount.amount
-                if card.min_withdraw-Decimal(min) >= Decimal(request.data['amount']):
-                    data = {'card':card.id,'user':request.user.id, 'amount':Decimal(request.data['amount'])}
-                    serializers = self.serializer_class(data = data, context={'user':card.user})
-                    if serializers.is_valid():
-                        serializers.save()
-                        user.transfer_zop(Decimal(request.data['amount']))
-                        user.save()
-                        card.user.burn_zop(Decimal(request.data['amount']))
-                        card.user.save()
-                        card.save()
-                        return Response(serializers.data, status = status.HTTP_201_CREATED)
-                    return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
-                return Response({'error':f"Lo sentimos excede el máximo de descuento diario de esa tarjeta, máximo a extraer {card.min_withdraw-Decimal(min)}"},status = status.HTTP_400_BAD_REQUEST)
+                if card.discount_code == request.data['discount_code']:
+                    discounts = DiscountCard.objects.filter(card=card.id).filter(date=timezone.now().date())
+                    min = 0
+                    for discount in discounts:
+                        min+=discount.amount
+                    if card.min_withdraw-Decimal(min) >= Decimal(request.data['amount']):
+                        data = {'card':card.id,'user':request.user.id, 'amount':Decimal(request.data['amount'])}
+                        serializers = self.serializer_class(data = data, context={'user':card.user})
+                        if serializers.is_valid():
+                            serializers.save()
+                            user.transfer_zop(Decimal(request.data['amount']))
+                            user.save()
+                            card.user.burn_zop(Decimal(request.data['amount']))
+                            card.user.save()
+                            card.save()
+                            return Response(serializers.data, status = status.HTTP_201_CREATED)
+                        return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
+                    return Response({'error':f"Lo sentimos excede el máximo de descuento diario de esa tarjeta, máximo a extraer {card.min_withdraw-Decimal(min)}"},status = status.HTTP_400_BAD_REQUEST)
+                return Response({'error':'El código de descuento es incorrecto'},status = status.HTTP_400_BAD_REQUEST)
             return Response({'error':'No puede descontarce a usted mismo'},status = status.HTTP_400_BAD_REQUEST)
         return Response({'error':'Tarjeta no existente'}, status= status.HTTP_404_NOT_FOUND)
     
