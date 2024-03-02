@@ -64,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'Usuarios'
     
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'movil','name','last_name','ci',]
+    REQUIRED_FIELDS = ['email']
     
     def natural_key(self):
         return (self.username)
