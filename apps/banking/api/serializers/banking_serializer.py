@@ -6,7 +6,7 @@ from apps.banking.models import Banking
 class BankingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banking
-        fields = ('id','user','state','amount','date','time')
+        fields = ('id','user','state','amount','date','time','interest','date_banked','post_interest')
         
     def to_representation(self, instance):
         return {
@@ -16,6 +16,11 @@ class BankingSerializer(serializers.ModelSerializer):
             'state': instance.state,
             'date' : instance.date,
             'time' : instance.time,
+            'interest':instance.interest(),
+            'post_interest':instance.post_interest(),
+            'date_banked':instance.date_banked(),
+            
+            
         }
         
     def validate_amount(self,data):
